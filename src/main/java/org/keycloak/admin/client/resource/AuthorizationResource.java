@@ -14,40 +14,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.keycloak.admin.client.resource;
 
+import org.keycloak.representations.idm.authorization.ResourceServerRepresentation;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.keycloak.representations.idm.ClientTemplateRepresentation;
-
 /**
- * @author rodrigo.sasaki@icarros.com.br
+ * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface ClientTemplateResource {
-
-    @Path("protocol-mappers")
-    public ProtocolMappersResource getProtocolMappers();
-
-    @Path("/scope-mappings")
-    public RoleMappingResource getScopeMappings();
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ClientTemplateRepresentation toRepresentation();
+public interface AuthorizationResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(ClientTemplateRepresentation rep);
+    @Produces(MediaType.APPLICATION_JSON)
+    void update(ResourceServerRepresentation server);
 
-    @DELETE
-    public void remove();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    ResourceServerRepresentation getSettings();
 
+    @Path("/import")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    void importSettings(ResourceServerRepresentation server);
 
+    @Path("/settings")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    ResourceServerRepresentation exportSettings();
+
+    @Path("/resource")
+    ResourcesResource resources();
+
+    @Path("/scope")
+    ResourceScopesResource scopes();
+
+    @Path("/policy")
+    PoliciesResource policies();
 }

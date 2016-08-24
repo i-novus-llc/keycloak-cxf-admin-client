@@ -54,7 +54,7 @@ public class TokenManager {
         this.config = config;
         BasicAuthFilter basicAuthFilter = new BasicAuthFilter(config.getClientId(), config.getClientSecret());
 
-        List providers = new ArrayList();
+        List<Object> providers = new ArrayList<>();
         providers.add(basicAuthFilter);
         providers.add(new JacksonJaxbJsonProvider());
 
@@ -62,7 +62,6 @@ public class TokenManager {
 
 
         this.tokenService = JAXRSClientFactory.fromClient(webClient, TokenService.class);
-        //this.tokenService = target.proxy(TokenService.class);
         this.accessTokenGrantType = config.getGrantType();
 
         if (CLIENT_CREDENTIALS.equals(accessTokenGrantType) && config.isPublicClient()) {
@@ -87,7 +86,7 @@ public class TokenManager {
         Form form = new Form().param(GRANT_TYPE, accessTokenGrantType);
         if (PASSWORD.equals(accessTokenGrantType)) {
             form.param("username", config.getUsername())
-                    .param("password", config.getPassword());
+                .param("password", config.getPassword());
         }
 
         if (config.isPublicClient()) {

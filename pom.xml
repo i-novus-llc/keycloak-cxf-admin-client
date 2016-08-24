@@ -24,7 +24,7 @@
 
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-cxf-admin-client</artifactId>
-    <version>2.0.0.Final</version>
+    <version>2.1.0.Final</version>
 
     <name>KEYCLOAK CXF ADMIN REST CLIENT</name>
     <description>Keycloack Admin Client library that use CXF as JAX-RS implementation instead of RESTEasy</description>
@@ -42,7 +42,6 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
-            <!-- same version as keycloak-->
             <version>${project.version}</version>
         </dependency>
 

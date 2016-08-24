@@ -17,8 +17,7 @@
 
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.ClientRepresentation;
-import org.keycloak.representations.idm.ClientTemplateRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -28,7 +27,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.keycloak.representations.idm.ClientTemplateRepresentation;
 
 /**
  * @author rodrigo.sasaki@icarros.com.br
@@ -45,7 +45,4 @@ public interface ClientTemplatesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ClientTemplateRepresentation> findAll();
-
-
-
 }

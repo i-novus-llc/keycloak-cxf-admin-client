@@ -14,40 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.keycloak.admin.client.resource;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.keycloak.representations.idm.ClientTemplateRepresentation;
+import org.keycloak.representations.idm.authorization.ScopeRepresentation;
 
 /**
- * @author rodrigo.sasaki@icarros.com.br
+ * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface ClientTemplateResource {
+public interface ResourceScopesResource {
 
-    @Path("protocol-mappers")
-    public ProtocolMappersResource getProtocolMappers();
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Response create(ScopeRepresentation scope);
 
-    @Path("/scope-mappings")
-    public RoleMappingResource getScopeMappings();
+    @Path("{id}")
+    ResourceScopeResource scope(@PathParam("id") String id);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ClientTemplateRepresentation toRepresentation();
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void update(ClientTemplateRepresentation rep);
-
-    @DELETE
-    public void remove();
-
-
+    List<ScopeRepresentation> scopes();
 }

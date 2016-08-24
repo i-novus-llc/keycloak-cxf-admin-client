@@ -14,40 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.keycloak.admin.client.resource;
+
+import org.keycloak.representations.idm.authorization.PolicyRepresentation;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.keycloak.representations.idm.ClientTemplateRepresentation;
-
 /**
- * @author rodrigo.sasaki@icarros.com.br
+ * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface ClientTemplateResource {
-
-    @Path("protocol-mappers")
-    public ProtocolMappersResource getProtocolMappers();
-
-    @Path("/scope-mappings")
-    public RoleMappingResource getScopeMappings();
+public interface PolicyResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ClientTemplateRepresentation toRepresentation();
+    PolicyRepresentation toRepresentation();
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(ClientTemplateRepresentation rep);
+    void update(PolicyRepresentation representation);
 
     @DELETE
-    public void remove();
-
-
+    void remove();
 }

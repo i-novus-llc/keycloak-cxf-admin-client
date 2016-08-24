@@ -49,7 +49,4 @@ public interface ClientsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ClientRepresentation> findByClientId(@QueryParam("clientId") String clientId);
-
-
-
 }

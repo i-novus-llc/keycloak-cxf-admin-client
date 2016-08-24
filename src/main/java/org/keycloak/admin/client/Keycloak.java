@@ -17,24 +17,24 @@
 
 package org.keycloak.admin.client;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import static org.keycloak.OAuth2Constants.PASSWORD;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.cxf.jaxrs.client.spec.ClientBuilderImpl;
 import org.keycloak.admin.client.resource.BearerAuthFilter;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.RealmsResource;
 import org.keycloak.admin.client.resource.ServerInfoResource;
 import org.keycloak.admin.client.token.TokenManager;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.keycloak.OAuth2Constants.PASSWORD;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 /**
  * Provides a Keycloak client. By default, this implementation uses a {@link Client JAX-RS client} with the
@@ -94,12 +94,11 @@ public class Keycloak {
      * @return
      */
     public <T> T proxy(Class<T> proxyClass, URI absoluteURI) {
-        List providers = new ArrayList();
+        List<Object> providers = new ArrayList<>();
         providers.add(new BearerAuthFilter(tokenManager));
         providers.add(new JacksonJaxbJsonProvider());
         WebClient.create(absoluteURI.toString(),providers);
         return JAXRSClientFactory.fromClient(client,proxyClass);
-        //return client.target(absoluteURI).register(new BearerAuthFilter(tokenManager)).proxy(proxyClass);
     }
 
     /**

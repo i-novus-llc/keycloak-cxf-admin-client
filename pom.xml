@@ -30,6 +30,7 @@
     <description>Keycloack Admin Client library that use CXF as JAX-RS implementation instead of RESTEasy</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cxf-version>3.0.4</cxf-version>
         <jackson2-version>2.6.3</jackson2-version>
         <slf4j-version>1.7.7</slf4j-version>

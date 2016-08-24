@@ -27,7 +27,7 @@
     <version>2.1.0.Final</version>
     <packaging>bundle</packaging>
 
-    <name>KEYCLOAK CXF ADMIN REST CLIENT</name>
+    <name>Keycloak CXF Admin REST Client</name>
     <description>Keycloack Admin Client library that use CXF as JAX-RS implementation instead of RESTEasy</description>
 
     <properties>

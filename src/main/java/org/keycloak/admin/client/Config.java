@@ -32,12 +32,15 @@ public class Config {
     private String clientId;
     private String clientSecret;
     private String grantType;
+	private String trustStoreLoc;
 
-    public Config(String serverUrl, String realm, String username, String password, String clientId, String clientSecret) {
-        this(serverUrl, realm, username, password, clientId, clientSecret, PASSWORD);
+    public Config(String serverUrl, String realm, String username, String password, String clientId, 
+            String clientSecret, String trustStoreLocation) {
+        this(serverUrl, realm, username, password, clientId, clientSecret, PASSWORD, trustStoreLocation);
     }
 
-    public Config(String serverUrl, String realm, String username, String password, String clientId, String clientSecret, String grantType) {
+    public Config(String serverUrl, String realm, String username, String password, String clientId, 
+    		String clientSecret, String grantType, String trustStoreLocation) {
         this.serverUrl = serverUrl;
         this.realm = realm;
         this.username = username;
@@ -46,6 +49,7 @@ public class Config {
         this.clientSecret = clientSecret;
         this.grantType = grantType;
         checkGrantType(grantType);
+        this.trustStoreLoc = trustStoreLocation;
     }
 
     public String getServerUrl() {
@@ -114,5 +118,13 @@ public class Config {
             throw new IllegalArgumentException("Unsupported grantType: " + grantType +
                     " (only " + PASSWORD + " and " + CLIENT_CREDENTIALS + " are supported)");
         }
+    }
+
+    public String getTrustStoreLocation() {
+        return trustStoreLoc;
+    }
+
+    public void setTrustStoreLocation(String trustStoreLocation) {
+        this.trustStoreLoc = trustStoreLocation;
     }
 }

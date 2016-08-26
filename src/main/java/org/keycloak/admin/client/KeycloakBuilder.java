@@ -39,7 +39,7 @@ import static org.keycloak.OAuth2Constants.PASSWORD;
  *     .webClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
  *     .build();
  * </pre>
- * <p>Example usage with grant_type=client_credentials</p>
+ * <p>Example usage with grant_type=client_credentials and SSL enabled</p>
  * <pre>
  *   Keycloak keycloak = KeycloakBuilder.builder()
  *     .serverUrl("https://sso.example.com/auth")
@@ -47,6 +47,7 @@ import static org.keycloak.OAuth2Constants.PASSWORD;
  *     .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
  *     .clientId("client")
  *     .clientSecret("secret")
+ *     .trustStoreLocation("pathToTrustStore")
  *     .build();
  * </pre>
  *
@@ -60,6 +61,7 @@ public class KeycloakBuilder {
     private String password;
     private String clientId;
     private String clientSecret;
+    private String trustStoreLocation;
     private String grantType = PASSWORD;
     private WebClient webClient;
 
@@ -99,6 +101,11 @@ public class KeycloakBuilder {
         return this;
     }
 
+    public KeycloakBuilder trustStoreLocation(String trustStoreLocation) {
+        this.trustStoreLocation = trustStoreLocation;
+        return this;
+    }
+
     public KeycloakBuilder webClient(WebClient webClient) {
         this.webClient = webClient;
         return this;
@@ -134,7 +141,7 @@ public class KeycloakBuilder {
             throw new IllegalStateException("clientId required");
         }
 
-        return new Keycloak(serverUrl, realm, username, password, clientId, clientSecret, grantType, webClient);
+        return new Keycloak(serverUrl, realm, username, password, clientId, clientSecret, grantType, webClient, trustStoreLocation);
     }
 
     private KeycloakBuilder() {

@@ -22,6 +22,7 @@ import static org.keycloak.OAuth2Constants.PASSWORD;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -46,26 +47,41 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
  * @see KeycloakBuilder
  */
 public class Keycloak {
+
     private final Config config;
     private final TokenManager tokenManager;
-    private  WebClient client;
+    private WebClient client;
 
-    Keycloak(String serverUrl, String realm, String username, String password, String clientId, String clientSecret, String grantType, WebClient client) {
-        config = new Config(serverUrl, realm, username, password, clientId, clientSecret, grantType);
+    Keycloak(String serverUrl, String realm, String username, String password, 
+            String clientId, String clientSecret, String grantType, WebClient client, String trustStoreLocation) {
+
+        config = new Config(serverUrl, realm, username, password, clientId, clientSecret, grantType, trustStoreLocation);
         tokenManager = new TokenManager(config);
-        List<Object> providers = new ArrayList<>();
+        
+        final List<Object> providers = new ArrayList<>();
         providers.add(new BearerAuthFilter(tokenManager));
         providers.add(new JacksonJaxbJsonProvider());
-        this.client = client != null ? client :  WebClient.create(serverUrl,providers);
 
+        try {
+            this.client = client != null ? client :  KeycloakWebClientFactory.create(serverUrl, 
+                    providers, Optional.ofNullable(trustStoreLocation));
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to secure keycloak connection as expected.");
+        }
     }
 
-    public static Keycloak getInstance(String serverUrl, String realm, String username, String password, String clientId, String clientSecret) {
-        return new Keycloak(serverUrl, realm, username, password, clientId, clientSecret, PASSWORD, null);
+    public static Keycloak getInstance(String serverUrl, String realm, String username, String password, 
+            String clientId, String clientSecret, String trustStoreLocation) {
+        return new Keycloak(serverUrl, realm, username, password, clientId, clientSecret, PASSWORD, null, trustStoreLocation);
+    }
+    
+    public static Keycloak getInstance(String serverUrl, String realm, String username, String password, 
+            String clientId, String clientSecret) {
+        return new Keycloak(serverUrl, realm, username, password, clientId, clientSecret, PASSWORD, null, null);
     }
 
     public static Keycloak getInstance(String serverUrl, String realm, String username, String password, String clientId) {
-        return new Keycloak(serverUrl, realm, username, password, clientId, null, PASSWORD, null);
+        return new Keycloak(serverUrl, realm, username, password, clientId, null, PASSWORD, null, null);
     }
 
     public RealmsResource realms() {
@@ -77,7 +93,7 @@ public class Keycloak {
     }
 
     public ServerInfoResource serverInfo() {
-        return JAXRSClientFactory.fromClient(client,ServerInfoResource.class);
+        return JAXRSClientFactory.fromClient(client, ServerInfoResource.class);
     }
 
     public TokenManager tokenManager() {

@@ -5,4 +5,5 @@ Keycloak version 2.1.0.Final
 
 Please see http://lists.jboss.org/pipermail/keycloak-user/2016-August/007234.html for more details
 
-Added OSGI Support
+Added OSGI support
+Added SSL support (necessary if your realm requires SSL for all connections)

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.keycloak.admin.client.Config;
+import org.keycloak.admin.client.KeycloakWebClientFactory;
 import org.keycloak.admin.client.resource.BasicAuthFilter;
 import org.keycloak.common.util.Time;
 import org.keycloak.representations.AccessTokenResponse;
@@ -32,6 +33,7 @@ import javax.ws.rs.core.Form;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.keycloak.OAuth2Constants.*;
 
@@ -58,14 +60,19 @@ public class TokenManager {
         providers.add(basicAuthFilter);
         providers.add(new JacksonJaxbJsonProvider());
 
-        WebClient webClient = WebClient.create(config.getServerUrl(), providers);
+        try {
+            final WebClient webClient = KeycloakWebClientFactory.create(config.getServerUrl(), providers, 
+                    Optional.ofNullable(config.getTrustStoreLocation()));
 
+            this.tokenService = JAXRSClientFactory.fromClient(webClient, TokenService.class);
+            this.accessTokenGrantType = config.getGrantType();
 
-        this.tokenService = JAXRSClientFactory.fromClient(webClient, TokenService.class);
-        this.accessTokenGrantType = config.getGrantType();
-
-        if (CLIENT_CREDENTIALS.equals(accessTokenGrantType) && config.isPublicClient()) {
-            throw new IllegalArgumentException("Can't use " + GRANT_TYPE + "=" + CLIENT_CREDENTIALS + " with public client");
+            if (CLIENT_CREDENTIALS.equals(accessTokenGrantType) && config.isPublicClient()) {
+                throw new IllegalArgumentException("Can't use " + GRANT_TYPE + "=" + CLIENT_CREDENTIALS + " with public client");
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Unable to secure keycloak connection as expected.");
         }
     }
 

@@ -16,7 +16,7 @@
  */
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.authorization.ResourceRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,9 +24,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.keycloak.representations.idm.authorization.ResourceRepresentation;
 
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
@@ -40,6 +42,16 @@ public interface ResourcesResource {
 
     @Path("{id}")
     ResourceResource resource(@PathParam("id") String id);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    List<ResourceRepresentation> find(@QueryParam("name") String name,
+                  @QueryParam("uri") String uri,
+                  @QueryParam("owner") String owner,
+                  @QueryParam("type") String type,
+                  @QueryParam("scope") String scope,
+                  @QueryParam("first") Integer firstResult,
+                  @QueryParam("max") Integer maxResult);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

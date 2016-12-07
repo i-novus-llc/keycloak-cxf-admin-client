@@ -17,11 +17,8 @@
 
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.adapters.action.GlobalRequestResult;
-import org.keycloak.representations.idm.ClientRepresentation;
-import org.keycloak.representations.idm.CredentialRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
-import org.keycloak.representations.idm.UserSessionRepresentation;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -33,8 +30,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Map;
+
+import org.keycloak.representations.adapters.action.GlobalRequestResult;
+import org.keycloak.representations.idm.ClientRepresentation;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.keycloak.representations.idm.UserSessionRepresentation;
 
 /**
  * @author rodrigo.sasaki@icarros.com.br
@@ -138,5 +139,8 @@ public interface ClientResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     GlobalRequestResult testNodesAvailable();
+
+    @Path("/authz/resource-server")
+    AuthorizationResource authorization();
 
 }

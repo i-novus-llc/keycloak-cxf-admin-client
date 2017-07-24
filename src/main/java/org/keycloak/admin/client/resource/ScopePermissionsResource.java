@@ -16,49 +16,33 @@
  */
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.authorization.ResourceServerRepresentation;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.keycloak.representations.idm.authorization.ScopePermissionRepresentation;
 
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface AuthorizationResource {
+public interface ScopePermissionsResource {
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    void update(ResourceServerRepresentation server);
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation getSettings();
-
-    @Path("/import")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    void importSettings(ResourceServerRepresentation server);
+    @Produces(MediaType.APPLICATION_JSON)
+    Response create(ScopePermissionRepresentation representation);
 
-    @Path("/settings")
+    @Path("{id}")
+    ScopePermissionResource findById(@PathParam("id") String id);
+
+    @Path("/search")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation exportSettings();
-
-    @Path("/resource")
-    ResourcesResource resources();
-
-    @Path("/scope")
-    ResourceScopesResource scopes();
-
-    @Path("/policy")
-    PoliciesResource policies();
-
-    @Path("/permission")
-    PermissionsResource permissions();
+    ScopePermissionRepresentation findByName(@QueryParam("name") String name);
 }

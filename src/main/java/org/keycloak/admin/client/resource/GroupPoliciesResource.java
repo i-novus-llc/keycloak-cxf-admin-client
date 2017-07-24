@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates
  * and other contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.keycloak.admin.client.resource;
-
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,42 +22,27 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.keycloak.representations.idm.UserFederationProviderFactoryRepresentation;
-import org.keycloak.representations.idm.UserFederationProviderRepresentation;
+import org.keycloak.representations.idm.authorization.GroupPolicyRepresentation;
 
 /**
- * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
+ * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface UserFederationProvidersResource {
-
-    @GET
-    @Path("providers")
-    @Produces(MediaType.APPLICATION_JSON)
-    List<UserFederationProviderFactoryRepresentation> getProviderFactories();
-
-
-    @GET
-    @Path("providers/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    UserFederationProviderFactoryRepresentation getProviderFactory(@PathParam("id") String id);
-
+public interface GroupPoliciesResource {
 
     @POST
-    @Path("instances")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response create(UserFederationProviderRepresentation rep);
-
-
-    @GET
-    @Path("instances")
     @Produces(MediaType.APPLICATION_JSON)
-    List<UserFederationProviderRepresentation> getProviderInstances();
+    Response create(GroupPolicyRepresentation representation);
 
+    @Path("{id}")
+    GroupPolicyResource findById(@PathParam("id") String id);
 
-    @Path("instances/{id}")
-    UserFederationProviderResource get(@PathParam("id") String id);
-
+    @Path("/search")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    GroupPolicyRepresentation findByName(@QueryParam("name") String name);
 }

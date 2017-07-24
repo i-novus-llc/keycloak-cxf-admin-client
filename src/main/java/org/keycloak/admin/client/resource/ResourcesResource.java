@@ -55,5 +55,9 @@ public interface ResourcesResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    List<ResourceRepresentation> findByName(@QueryParam("name") String name);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     List<ResourceRepresentation> resources();
 }

@@ -40,7 +40,7 @@ public class Config {
     }
 
     public Config(String serverUrl, String realm, String username, String password, String clientId, 
-    		String clientSecret, String grantType, String trustStoreLocation) {
+            String clientSecret, String grantType, String trustStoreLocation) {
         this.serverUrl = serverUrl;
         this.realm = realm;
         this.username = username;
@@ -114,7 +114,7 @@ public class Config {
     }
 
     public static void checkGrantType(String grantType) {
-        if (!PASSWORD.equals(grantType) && !CLIENT_CREDENTIALS.equals(grantType)) {
+        if (grantType != null && !PASSWORD.equals(grantType) && !CLIENT_CREDENTIALS.equals(grantType)) {
             throw new IllegalArgumentException("Unsupported grantType: " + grantType +
                     " (only " + PASSWORD + " and " + CLIENT_CREDENTIALS + " are supported)");
         }

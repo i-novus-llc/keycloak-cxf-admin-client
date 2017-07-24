@@ -161,8 +161,13 @@ public interface RealmResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response partialImport(PartialImportRepresentation rep);
+    Response partialImport(PartialImportRepresentation rep);
 
+    @Path("partial-export")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    RealmRepresentation partialExport(@QueryParam("exportGroupsAndRoles") Boolean exportGroupsAndRoles,
+                                             @QueryParam("exportClients") Boolean exportClients);
     @Path("authentication")
     @Consumes(MediaType.APPLICATION_JSON)
     AuthenticationManagementResource flows();
@@ -170,14 +175,16 @@ public interface RealmResource {
     @Path("attack-detection")
     AttackDetectionResource attackDetection();
 
-    @Path("user-federation")
-    UserFederationProvidersResource userFederation();
-
     @Path("testLDAPConnection")
     @GET
     Response testLDAPConnection(@QueryParam("action") String action, @QueryParam("connectionUrl") String connectionUrl,
                                 @QueryParam("bindDn") String bindDn, @QueryParam("bindCredential") String bindCredential,
-                                @QueryParam("useTruststoreSpi") String useTruststoreSpi);
+                                @QueryParam("useTruststoreSpi") String useTruststoreSpi, @QueryParam("connectionTimeout") String connectionTimeout);
+
+    @Path("testSMTPConnection/{config}")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    Response testSMTPConnection(final @PathParam("config") String config) throws Exception;
 
     @Path("clear-realm-cache")
     @POST
@@ -186,6 +193,10 @@ public interface RealmResource {
     @Path("clear-user-cache")
     @POST
     void clearUserCache();
+
+    @Path("clear-keys-cache")
+    @POST
+    void clearKeysCache();
 
     @Path("push-revocation")
     @POST
@@ -204,7 +215,9 @@ public interface RealmResource {
     @Path("components")
     ComponentsResource components();
 
+    @Path("user-storage")
+    UserStorageProviderResource userStorage();
+
     @Path("keys")
     KeyResource keys();
-
 }

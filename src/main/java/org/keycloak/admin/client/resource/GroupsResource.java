@@ -17,7 +17,7 @@
 
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.GroupRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,7 +27,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.keycloak.representations.idm.GroupRepresentation;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -36,7 +37,7 @@ import java.util.List;
 public interface GroupsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<GroupRepresentation> groups();
+    List<GroupRepresentation> groups();
 
     /**
      * create or add a top level realm groupSet or create child.  This will update the group and set the parent if it exists.  Create it and set the parent
@@ -46,9 +47,9 @@ public interface GroupsResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(GroupRepresentation rep);
+    Response add(GroupRepresentation rep);
 
     @Path("{id}")
-    public GroupResource group(@PathParam("id") String id);
+    GroupResource group(@PathParam("id") String id);
 
 }

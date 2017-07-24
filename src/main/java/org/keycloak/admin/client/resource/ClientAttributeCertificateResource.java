@@ -55,9 +55,7 @@ public interface ClientAttributeCertificateResource {
     @Produces(MediaType.APPLICATION_JSON)
     public CertificateRepresentation generate();
 
-
     /**
-     *
      * Upload certificate and eventually private key
      *
      * @param keystoreFormat

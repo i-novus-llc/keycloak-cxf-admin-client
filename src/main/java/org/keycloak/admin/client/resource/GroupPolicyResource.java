@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates
  * and other contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,49 +16,48 @@
  */
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.authorization.ResourceServerRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.keycloak.representations.idm.authorization.GroupPolicyRepresentation;
+import org.keycloak.representations.idm.authorization.PolicyRepresentation;
+import org.keycloak.representations.idm.authorization.ResourceRepresentation;
+
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface AuthorizationResource {
+public interface GroupPolicyResource {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    GroupPolicyRepresentation toRepresentation();
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    void update(ResourceServerRepresentation server);
+    void update(GroupPolicyRepresentation representation);
 
+    @DELETE
+    void remove();
+
+    @Path("/associatedPolicies")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation getSettings();
+    List<PolicyRepresentation> associatedPolicies();
 
-    @Path("/import")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    void importSettings(ResourceServerRepresentation server);
-
-    @Path("/settings")
+    @Path("/dependentPolicies")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation exportSettings();
+    List<PolicyRepresentation> dependentPolicies();
 
-    @Path("/resource")
-    ResourcesResource resources();
-
-    @Path("/scope")
-    ResourceScopesResource scopes();
-
-    @Path("/policy")
-    PoliciesResource policies();
-
-    @Path("/permission")
-    PermissionsResource permissions();
+    @Path("/resources")
+    @GET
+    @Produces("application/json")
+    List<ResourceRepresentation> resources();
 }

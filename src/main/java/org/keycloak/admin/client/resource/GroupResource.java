@@ -17,8 +17,7 @@
 
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.GroupRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,7 +29,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.keycloak.representations.idm.GroupRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -76,6 +77,17 @@ public interface GroupResource {
     @Path("role-mappings")
     public RoleMappingResource roles();
 
+    /**
+     * Get users
+     * <p/>
+     * Returns a list of all users in group.
+     *
+     * @return  Returns a max size of 100 users
+     */
+    @GET
+    @Path("/members")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserRepresentation> members();
     /**
      * Get users
      * <p/>

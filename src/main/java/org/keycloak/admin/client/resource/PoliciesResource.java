@@ -16,8 +16,7 @@
  */
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.authorization.PolicyProviderRepresentation;
-import org.keycloak.representations.idm.authorization.PolicyRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,9 +24,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+
+import org.keycloak.representations.idm.authorization.PolicyEvaluationRequest;
+import org.keycloak.representations.idm.authorization.PolicyEvaluationResponse;
+import org.keycloak.representations.idm.authorization.PolicyProviderRepresentation;
+import org.keycloak.representations.idm.authorization.PolicyRepresentation;
 
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
@@ -42,6 +46,11 @@ public interface PoliciesResource {
     @Path("{id}")
     PolicyResource policy(@PathParam("id") String id);
 
+    @Path("/search")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    PolicyRepresentation findByName(@QueryParam("name") String name);
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     List<PolicyRepresentation> policies();
@@ -50,4 +59,34 @@ public interface PoliciesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     List<PolicyProviderRepresentation> policyProviders();
+
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    @Path("evaluate")
+    PolicyEvaluationResponse evaluate(PolicyEvaluationRequest evaluationRequest);
+
+    @Path("role")
+    RolePoliciesResource role();
+
+    @Path("user")
+    UserPoliciesResource user();
+
+    @Path("js")
+    JSPoliciesResource js();
+
+    @Path("time")
+    TimePoliciesResource time();
+
+    @Path("aggregate")
+    AggregatePoliciesResource aggregate();
+
+    @Path("rules")
+    RulePoliciesResource rule();
+
+    @Path("client")
+    ClientPoliciesResource client();
+
+    @Path("group")
+    GroupPoliciesResource group();
 }

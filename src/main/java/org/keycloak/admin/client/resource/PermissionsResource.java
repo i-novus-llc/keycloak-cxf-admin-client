@@ -16,37 +16,16 @@
  */
 package org.keycloak.admin.client.resource;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.keycloak.representations.idm.authorization.PolicyRepresentation;
-import org.keycloak.representations.idm.authorization.ResourceRepresentation;
 
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface ResourceResource {
+public interface PermissionsResource {
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    ResourceRepresentation toRepresentation();
+    @Path("resource")
+    ResourcePermissionsResource resource();
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    void update(ResourceRepresentation resource);
-
-    @DELETE
-    void remove();
-
-    @Path("permissions")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    List<PolicyRepresentation> permissions();
+    @Path("scope")
+    ScopePermissionsResource scope();
 }

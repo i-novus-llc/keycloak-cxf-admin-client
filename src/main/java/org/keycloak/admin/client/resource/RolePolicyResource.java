@@ -16,49 +16,48 @@
  */
 package org.keycloak.admin.client.resource;
 
-import org.keycloak.representations.idm.authorization.ResourceServerRepresentation;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.keycloak.representations.idm.authorization.PolicyRepresentation;
+import org.keycloak.representations.idm.authorization.ResourceRepresentation;
+import org.keycloak.representations.idm.authorization.RolePolicyRepresentation;
+
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Igor</a>
  */
-public interface AuthorizationResource {
+public interface RolePolicyResource {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    RolePolicyRepresentation toRepresentation();
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    void update(ResourceServerRepresentation server);
+    void update(RolePolicyRepresentation representation);
 
+    @DELETE
+    void remove();
+
+    @Path("/associatedPolicies")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation getSettings();
+    List<PolicyRepresentation> associatedPolicies();
 
-    @Path("/import")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    void importSettings(ResourceServerRepresentation server);
-
-    @Path("/settings")
+    @Path("/dependentPolicies")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    ResourceServerRepresentation exportSettings();
+    List<PolicyRepresentation> dependentPolicies();
 
-    @Path("/resource")
-    ResourcesResource resources();
-
-    @Path("/scope")
-    ResourceScopesResource scopes();
-
-    @Path("/policy")
-    PoliciesResource policies();
-
-    @Path("/permission")
-    PermissionsResource permissions();
+    @Path("/resources")
+    @GET
+    @Produces("application/json")
+    List<ResourceRepresentation> resources();
 }

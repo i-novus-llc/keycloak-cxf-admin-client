@@ -6,3 +6,6 @@ Please see http://lists.jboss.org/pipermail/keycloak-user/2016-August/007234.htm
 ## Additional features
 * Added OSGI support
 * Added SSL support (necessary if your realm requires SSL for all connections)
+
+## Additional notes to releases
+* Release 3.5.0 has been created to be able to update karaf to 4.1.x but still using the old keycloak 3.4.x version.

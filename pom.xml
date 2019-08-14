@@ -36,6 +36,13 @@
         <url>https://i-novus.ru/</url>
     </organization>
 
+    <developers>
+        <developer>
+            <name>Alexander Belov</name>
+            <email>abelov@i-novus.ru</email>
+        </developer>
+    </developers>
+
     <licenses>
         <license>
             <url>http://www.apache.org/licenses/LICENSE-2.0</url>

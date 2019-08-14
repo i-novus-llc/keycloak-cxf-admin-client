@@ -22,13 +22,33 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.keycloak</groupId>
+    <groupId>ru.i-novus.components</groupId>
     <artifactId>keycloak-cxf-admin-client</artifactId>
-    <version>3.5.0</version>
+    <version>3.4.0.Final</version>
     <packaging>bundle</packaging>
 
     <name>Keycloak CXF Admin REST Client</name>
     <description>Keycloack Admin Client library that use CXF as JAX-RS implementation instead of RESTEasy</description>
+    <url>https://github.com/i-novus-llc/keycloak-cxf-admin-client</url>
+
+    <organization>
+        <name>I-Novus LLC</name>
+        <url>https://i-novus.ru/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>Apache License, Version 2.0</name>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:i-novus-llc/keycloak-cxf-admin-client.git</connection>
+        <url>scm:git:git@github.com:i-novus-llc/keycloak-cxf-admin-client.git</url>
+        <developerConnection>scm:git:git@github.com:i-novus-llc/keycloak-cxf-admin-client.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -105,4 +125,52 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
